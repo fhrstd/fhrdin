@@ -7,7 +7,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 async function fetchAnimations() {
   // Fetch data from Supabase
   const { data: animations, error } = await supabase
-    .from('animations') // Using animations table
+    .from('animations2') // Using animations table
     .select('target_id, video_url, name'); // Now using video_url instead of gif_url
 
   if (error) {
