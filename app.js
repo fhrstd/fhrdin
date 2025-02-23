@@ -7,8 +7,8 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 async function fetchAnimations() {
   // Fetch data from Supabase
   const { data: animations, error } = await supabase
-    .from('animations')
-    .select('target_id, gif_url, name');
+    .from('animations') // Using animations table
+    .select('target_id, video_url, name'); // Now using video_url instead of gif_url
 
   if (error) {
     console.error("Error fetching data:", error);
@@ -18,29 +18,44 @@ async function fetchAnimations() {
   const assetsContainer = document.querySelector('#assets-container');
   const entityContainer = document.querySelector('#entity-container');
 
-  // Load assets
+  // Load WebM videos as assets
   animations.forEach(item => {
-    const assetItem = document.createElement('img');
-    assetItem.setAttribute('id', item.name);
-    assetItem.setAttribute('src', item.gif_url);
-    assetsContainer.appendChild(assetItem);
+    const videoAsset = document.createElement('video');
+    videoAsset.setAttribute('id', item.name);
+    videoAsset.setAttribute('src', item.video_url);
+    videoAsset.setAttribute('loop', 'true');
+    videoAsset.setAttribute('autoplay', 'true');
+    videoAsset.setAttribute('muted', 'true'); // Required for autoplay
+    videoAsset.setAttribute('playsinline', 'true');  
+    videoAsset.setAttribute('crossorigin', 'anonymous'); // Prevents CORS issues
+    videoAsset.setAttribute('webkit-playsinline', 'true');  
+    videoAsset.style.background = 'transparent'; // Ensures transparency
+    assetsContainer.appendChild(videoAsset);
   });
 
   console.log("Assets Loaded:", assetsContainer.innerHTML); // Debugging assets
 
-  // Create MindAR entities
-  animations.forEach((elm) => {  
+  // Create MindAR entities with WebM animations
+  animations.forEach((elm) => {
     console.log(`Creating entity for ${elm.name} with target ID: ${elm.target_id}`); // Debugging
 
     const target = document.createElement('a-entity');
 
     target.innerHTML = `
       <a-entity mindar-image-target="targetIndex: ${elm.target_id}">
-        <a-entity 
-          material="shader: gif; src: #${elm.name}; transparent: true" 
-          geometry="primitive: plane; width: 1; height: 1.4"
+        <a-video 
+          id="${elm.name}"
+          src="#${elm.name}"
+          width="1" 
+          height="1.4"
           position="0 0 0"
-        ></a-entity>
+          autoplay
+          loop
+          muted
+          transparent="true"
+          crossorigin="anonymous"
+          playsinline
+        ></a-video>
       </a-entity>
     `;
 
@@ -50,5 +65,5 @@ async function fetchAnimations() {
   console.log("Entities added:", entityContainer.innerHTML); // Debugging entities
 }
 
+// Load animations when the page is ready
 fetchAnimations();
-
