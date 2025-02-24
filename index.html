@@ -12,7 +12,7 @@
   <!-- Custom JavaScript -->
   <script type="module" src="app.js"></script>
 
-  <style>
+  <!--style>
     a-entity[material] {
       image-rendering: crisp-edges;
       background: transparent !important;
@@ -20,13 +20,13 @@
     video {
       background: transparent !important;
     }
-  </style>
+</style-->
 </head>
 
 <body>
   <!-- Initialize MindAR -->
   <a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
-           vr-mode-ui="enabled: false"
+           color-space="sRGB" vr-mode-ui="enabled: false"
            device-orientation-permission-ui="enabled: false">
     
     <!-- Assets Container -->
