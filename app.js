@@ -45,14 +45,13 @@ async function fetchAnimations() {
       <a-entity mindar-image-target="targetIndex: ${elm.target_id}">
         <a-video 
           id="${elm.name}"
-          material="shader: transparent-video; src: #${elm.name}"
+          material="shader: transparent-video; src: #${elm.name}; color: #ffcccc; transparent: true"
           width="1" 
           height="1.4"
           position="0 0 0"
           autoplay
           loop
           muted
-          transparent="true"
           crossorigin="anonymous"
           playsinline
         ></a-video>
